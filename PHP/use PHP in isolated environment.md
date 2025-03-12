@@ -25,7 +25,7 @@ should be something like this `D:\you-project-path\.venv\Lib\php-8.4.3` where in
 setlocal
 
 REM Define the constant executable path
-set "command_exe=.\\.venv\\Lib\\php-8.2.5\\php.exe"
+set "command_exe=C:\path\to\project\composer.phar"
 
 REM Check if the executable exists
 if not exist "%command_exe%" (
@@ -41,7 +41,7 @@ REM Execute the executable with all provided arguments
 #!/bin/bash
 
 # Define the constant executable path (can be relative or absolute)
-command_exe="./.venv/Lib/php-8.2.5/php"
+command_exe="/path/to/.venv/Lib/php-8.2.5/php"
 
 # Resolve the relative path to an absolute path
 command_exe=$(realpath "$command_exe")
@@ -59,6 +59,43 @@ fi
 # configure composer
 
 if you need specific version of composer inside `Lib` create a composer folder and
+
+go to `php.ini` in the php root 
+
+enable the below extensios
+- curl
+- gd
+- openssl
+- zip
+
+to check if the extensions enabled run 
+
+```bash
+php -m
+```
+
+in case you face an error about can't find extensions checkout `extension_dir = "ext"` value in the `php.ini`
+
+in windows uncomment the `extension_dir = "ext"` will fix problem , in ubuntu address to the ext folder
+
+to download `composer-setup.php` run the 
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+```
+then 
+```bash
+php composer-setup.php
+```
+
+now composer is installed and ready to use locally via `php composer.phar` 
+
+verify installation ...
+
+```bash
+php composer.phar --version
+```
+
+to use with `composer` command copy it to `Scripts` in windows and `bin` in ubuntu
 
 ## Ubuntu
 ```bash
@@ -85,7 +122,7 @@ php "${dir}/composer.phar" "$@"
 @echo OFF
 :: in case DelayedExpansion is on and a path contains ! 
 setlocal DISABLEDELAYEDEXPANSION
-php "%~dp0composer.phar" %*
+php "C:\path\to\project\composer.phar" %*
 ```
 
 and download your desired composer version of `composer.phar`
